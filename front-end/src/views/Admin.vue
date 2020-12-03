@@ -3,49 +3,51 @@
   <h1>Listing Page!</h1>
 
   <div class="heading">
-     <div class="circle">1</div>
-     <h2>Add an Item</h2>
-   </div>
+    <div class="circle">1</div>
+    <h2>Add an Item</h2>
+  </div>
 
-   <div class="add">
-     <div class="form">
-       <input v-model="title" placeholder="Title">
-       <input v-model="price" placeholder="Price">
-       <input v-model="seller" placeholder="Seller">
-       <p></p>
-       <input type="file" name="photo" @change="fileChanged">
-       <button @click="upload">Upload</button>
-     </div>
-     <div class="upload" v-if="addItem">
-       <h2>Item Listed: {{addItem.title}}</h2>
-       <h2>Seller Name: {{addItem.seller}}</h2>
-       <img :src="addItem.path" />
-       <h2>Price Selected: ${{addItem.price}}</h2>
-     </div>
-   </div>
+  <div class="add">
+    <div class="form">
+      <input v-model="title" placeholder="Title">
+      <p></p>
+      <input v-model="price" placeholder="Price">
+      <p></p>
+      <input v-model="seller" placeholder="Seller">
+      <p></p>
+      <input type="file" name="photo" @change="fileChanged">
+      <button @click="upload">Upload</button>
+    </div>
+    <div class="upload" v-if="addItem">
+      <h2>Item Listed: {{addItem.title}}</h2>
+      <h2>Seller Name: {{addItem.seller}}</h2>
+      <img :src="addItem.path" />
+      <h2>Price Selected: ${{addItem.price}}</h2>
+    </div>
+  </div>
 
-   <div class="heading">
-     <div class="circle">2</div>
-     <h2>Buy/Delete an Item</h2>
-   </div>
-   <div class="edit">
-     <div class="form">
-       <input v-model="findTitle" placeholder="Search">
-       <div class="suggestions" v-if="suggestions.length > 0">
-         <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectItem(s)">{{s.title}}
-         </div>
-       </div>
-     </div>
-     <div class="upload" v-if="findItem">
-       <h2>Item Name: {{findItem.title}}</h2>
-       <h2>Seller: {{findItem.seller}}</h2>
-       <img :src="findItem.path" />
-       <h2>Price: ${{findItem.price}}</h2>
-       <div class="actions" v-if="findItem">
-         <button @click="deleteItem(findItem)">Delete</button>
-       </div>
-     </div>
-   </div>
+  <div class="heading">
+    <div class="circle">2</div>
+    <h2>Buy/Delete an Item</h2>
+  </div>
+  <div class="edit">
+    <div class="form">
+      <input v-model="findTitle" placeholder="Search">
+      <div class="suggestions" v-if="suggestions.length > 0">
+        <div class="suggestion" v-for="s in suggestions" :key="s.id" @click="selectItem(s)">{{s.title}}
+        </div>
+      </div>
+    </div>
+    <div class="upload" v-if="findItem">
+      <h2>Item Name: {{findItem.title}}</h2>
+      <h2>Seller: {{findItem.seller}}</h2>
+      <img :src="findItem.path" />
+      <h2>Price: ${{findItem.price}}</h2>
+      <div class="actions" v-if="findItem">
+        <button @click="deleteItem(findItem)">Delete</button>
+      </div>
+    </div>
+  </div>
 </div>
 </template>
 
@@ -165,30 +167,30 @@ export default {
       }
     },
     async getItems() {
-  try {
-    let response = await axios.get("/api/items");
-    this.items = response.data;
-    return true;
-  } catch (error) {
-    console.log(error);
-  }
-},
-selectItem(item) {
-     this.findTitle = "";
+      try {
+        let response = await axios.get("/api/items");
+        this.items = response.data;
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    selectItem(item) {
+      this.findTitle = "";
 
-     this.findItem = item;
-   },
-   async deleteItem(item) {
-     try {
-       await axios.delete("/api/items/" + item._id);
-       this.findItem = null;
-       this.getItems();
-       return true;
-     } catch (error) {
-       console.log(error);
-     }
-   },
-   async editItem(item) {
+      this.findItem = item;
+    },
+    async deleteItem(item) {
+      try {
+        await axios.delete("/api/items/" + item._id);
+        this.findItem = null;
+        this.getItems();
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async editItem(item) {
       try {
         await axios.put("/api/items/" + item._id, {
           title: this.findItem.title,
@@ -202,6 +204,4 @@ selectItem(item) {
     },
   }
 }
-
-
 </script>

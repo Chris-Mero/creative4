@@ -41,19 +41,18 @@ app.delete('/api/items/:id', async (req, res) => {
     res.sendStatus(500);
   }
 });
+//CAN BE REMOVED IF IT DOESN'T WORK
 app.put('/api/items/:id', async (req, res) => {
   try {
-    const item = await Item.findone({
-      _id: req.params.id,
-    });
-    item.set.title(req.body.title)
-    try {;
-      await item.save();
-      res.send(item);
-    } catch (error) {
-      console.log(error);
-      res.sendStatus(500);
-    }
+    const item = await Item.findOne({
+      _id: req.params.id},
+      {set:{
+        title: req.body.title,
+        seller: req.body.seller,
+        price: req.body.price}
+      });
+    console.log(item.title);
+    item.save();
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
