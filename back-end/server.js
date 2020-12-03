@@ -17,6 +17,8 @@ mongoose.connect('mongodb://localhost:27017/museum', {
 app.post('/api/items', async (req, res) => {
   const item = new Item({
     title: req.body.title,
+    seller: req.body.seller,
+    price: req.body.price,
     path: req.body.path,
   });
   try {
@@ -60,6 +62,8 @@ app.put('/api/items/:id', async (req, res) => {
 // Create a scheme for items in the museum: a title and a path to an image.
 const itemSchema = new mongoose.Schema({
   title: String,
+  seller: String,
+  price: String,
   path: String,
 });
 

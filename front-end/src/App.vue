@@ -14,7 +14,7 @@
     <router-view />
   </div>
   <div class="footer">
-    <router-link to="/admin">Admin</router-link>
+    <router-link to="/admin">Listing Page</router-link>
     <p><a href="https://github.com/Chris-Mero/creative4">Our Github</a></p>
   </div>
 </div>

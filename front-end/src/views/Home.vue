@@ -2,8 +2,11 @@
 <div class="home">
   <section class="image-gallery">
     <div class="image" v-for="item in items" :key="item.id">
-      <h2>{{item.title}}</h2>
+      <h2>Item for sale: {{item.title}}</h2>
+      <h2>Seller: {{item.seller}}</h2>
       <img :src="item.path" />
+      <h2>Price: ${{item.price}}</h2>
+      <button @click="deleteItem(item)">Buy</button>
     </div>
   </section>
 </div>
@@ -27,6 +30,16 @@ export default {
       try {
         let response = await axios.get("/api/items");
         this.items = response.data;
+        return true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async deleteItem(item) {
+      try {
+        await axios.delete("/api/items/" + item._id);
+        this.findItem = null;
+        this.getItems();
         return true;
       } catch (error) {
         console.log(error);

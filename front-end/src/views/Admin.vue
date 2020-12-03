@@ -1,6 +1,6 @@
 <template>
 <div class="admin">
-  <h1>The Admin Page!</h1>
+  <h1>Listing Page!</h1>
 
   <div class="heading">
      <div class="circle">1</div>
@@ -10,19 +10,23 @@
    <div class="add">
      <div class="form">
        <input v-model="title" placeholder="Title">
+       <input v-model="price" placeholder="Price">
+       <input v-model="seller" placeholder="Seller">
        <p></p>
        <input type="file" name="photo" @change="fileChanged">
        <button @click="upload">Upload</button>
      </div>
      <div class="upload" v-if="addItem">
-       <h2>{{addItem.title}}</h2>
+       <h2>Item Listed: {{addItem.title}}</h2>
+       <h2>Seller Name: {{addItem.seller}}</h2>
        <img :src="addItem.path" />
+       <h2>Price Selected: ${{addItem.price}}</h2>
      </div>
    </div>
 
    <div class="heading">
      <div class="circle">2</div>
-     <h2>Edit/Delete an Item</h2>
+     <h2>Buy/Delete an Item</h2>
    </div>
    <div class="edit">
      <div class="form">
@@ -33,13 +37,13 @@
        </div>
      </div>
      <div class="upload" v-if="findItem">
-       <input v-model="findItem.title">
-       <p></p>
+       <h2>Item Name: {{findItem.title}}</h2>
+       <h2>Seller: {{findItem.seller}}</h2>
        <img :src="findItem.path" />
-     </div>
-     <div class="actions" v-if="findItem">
-       <button @click="deleteItem(findItem)">Delete</button>
-       <button @click="editItem(findItem)">Edit</button>
+       <h2>Price: ${{findItem.price}}</h2>
+       <div class="actions" v-if="findItem">
+         <button @click="deleteItem(findItem)">Delete</button>
+       </div>
      </div>
    </div>
 </div>
@@ -122,6 +126,8 @@ export default {
   data() {
     return {
       title: "",
+      price: "",
+      seller: "",
       file: null,
       addItem: null,
       items: [],
@@ -149,6 +155,8 @@ export default {
         let r1 = await axios.post('/api/photos', formData);
         let r2 = await axios.post('/api/items', {
           title: this.title,
+          seller: this.seller,
+          price: this.price,
           path: r1.data.path
         });
         this.addItem = r2.data;
@@ -167,6 +175,7 @@ export default {
 },
 selectItem(item) {
      this.findTitle = "";
+
      this.findItem = item;
    },
    async deleteItem(item) {
